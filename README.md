@@ -1,4 +1,11 @@
 Train Times Display
+===================
+
+![Arduino showing next train times](http://farm9.staticflickr.com/8488/8279350628_0b14fb578c.jpg)
+
+This is a little arduino project which aims to display the next train times on a 16x2 LCD display,
+because I live near the station and always like to know how long I've got / how much I need to panic
+when getting ready to go out. Hopefully one day it will sit in the hallway and be extremely useful.
 
 
 Arduino
@@ -16,12 +23,19 @@ Python Script
 The brains of the operation - scrapes live departure boards for the station in question,
 decides what to display and sends commands over the serial port
 
-
 Requirements
 ------------
+### Software ###
+
 * python 3
 * pyserial
 * beautifulsoup v4
+
+### Hardware ###
+
+* Arduino
+* LCD 16x display + header so it sticks into the breadboard
+* Breadboard, jumper wires, potentiometer
 
 
 Protocol
@@ -66,4 +80,6 @@ Future work
 
 Thanks
 ------
-Thanks to @dgym for helping out with the C.
+* Thanks to adafruit for the [excellent character LCD tutorial](http://learn.adafruit.com/character-lcds/overview)
+* Thanks to [dgym](https://github.com/dgym) for helping fix my rusty C.
+
