@@ -41,6 +41,9 @@ Requirements
 Protocol
 --------
 
+Arduino sends a single zero when it's ready for action. (This is because the it resets
+itself on new serial connection - we don't want to throw commands at it until it's ready)
+
 Commands consist of a single letter followed by the arguments for that command
 
 MOVE (m)
@@ -65,6 +68,20 @@ Clear screen
 e.g. 'c'
 
 
+SCROLL LEFT (l)
+
+Scroll the display left by the specified number of columns
+
+e.g. 'l\x05' scrolls left by 5
+
+
+SCROLL RIGHT (r)
+
+Scroll the display right by the specified number of columns
+
+e.g. 'r\x05' scrolls right by 5
+
+
 Commands can be concatenated. e.g.
 
     'cm\x00\x01wHello\0'
@@ -73,8 +90,7 @@ Commands can be concatenated. e.g.
 Future work
 -----------
 
-* Countdown to next train
-* Display next 2 trains in any direction
+* Long-running process with scheduling
 * Use RGB backlit display and light up red when there are problems
 
 
@@ -82,4 +98,4 @@ Thanks
 ------
 * Thanks to adafruit for the [excellent character LCD tutorial](http://learn.adafruit.com/character-lcds/overview)
 * Thanks to [dgym](https://github.com/dgym) for helping fix my rusty C.
-
+* Begrudging thanks to NRE for at least putting your live departure info on a fixed, scrapable URL (now, please open it up properly!). Also for providing me with plenty of opportunities to test delay data. ;P
