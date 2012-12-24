@@ -5,9 +5,9 @@ import itertools
 import times
 import config
 
-from display import LCDDisplay
-lcd = LCDDisplay(config.SERIAL_PORT)
-lcd.clear()
+from display import Display
+display = Display(config.SERIAL_PORT)
+display.clear()
 
 trains = times.NRETimes(config.STATION, config.DIRECTIONS)
 
@@ -32,8 +32,8 @@ def next_two_to_waterloo():
         else:
             delay = ''
 
-        lcd.move_to(0, i)
-        lcd.write("{time} {countdown:2} {delay:>3} {station}".format(
+        display.move_to(0, i)
+        display.write("{time} {countdown:2} {delay:>3} {station}".format(
             time=time,
             countdown=minutes,
             delay=delay,
@@ -45,8 +45,8 @@ def next_train_in_each_direction():
         # LCD gets next train in each direction
         next_train = next(trains.going_to(direction))
         time = next_train.timetabled_departure.strftime("%H:%M")
-        lcd.move_to(0, i)
-        lcd.write("{time} {countdown:2} {delay:>3}  {station}".format(
+        display.move_to(0, i)
+        display.write("{time} {countdown:2} {delay:>3}  {station}".format(
             time=time,
             countdown=next_train.minutes_until,
             delay=next_train.minutes_late or '',
@@ -67,4 +67,4 @@ def all_trains_to_console():
 
 next_two_to_waterloo()
 
-lcd.flush()
+display.flush()
