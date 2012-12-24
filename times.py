@@ -1,10 +1,10 @@
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 # Detect past-midnight trains that will be given tomorrow's date
 DAY_CUTOFF = 4
+
 
 class Train(object):
 
@@ -78,7 +78,6 @@ class Train(object):
         else:
             # On time
             self._actual_departure = self._timetabled_departure
-
 
 
 class NRETimes(object):
