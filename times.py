@@ -39,9 +39,20 @@ class Train(object):
     def actual_departure(self, value):
         self._actual_departure = self.__parse_time(value)
 
+    @property
+    def minutes_until(self):
+        if self.actual_departure:
+            return int((self.actual_departure - datetime.now()).total_seconds() / 60)
+
+    def __str__(self):
+        return "{0} to {1}".format(
+                self.timetabled_departure.strftime("%H:%M"),
+                self.destination)
+
     def will_depart(self):
         return self.running and (
-            self.actual_departure is None or self.actual_departure > datetime.now())
+            self.actual_departure is None or
+            self.actual_departure > datetime.now())
 
     def __parse_time(self, hhmm):
         time = datetime.strptime(hhmm.strip().strip("ad"), "%H:%M").time()
@@ -72,7 +83,8 @@ class Train(object):
             # Read in expected time
             try:
                 self.actual_departure = status[0]
-            except ValueError:
+                self.minutes_late = int(status[2])
+            except (ValueError, KeyError):
                 pass
 
         else:
