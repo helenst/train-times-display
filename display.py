@@ -1,5 +1,6 @@
 import serial
 
+
 class LCDDisplay(object):
 
     def __init__(self, device, rate=9600, cols=16, rows=2):

@@ -11,26 +11,37 @@ class Train(object):
     def __init__(self, row):
 
         # managed by property
-        self._departs = None
+        self._timetabled_departure = None
+        self._actual_departure = None
 
         self.destination = None
         self.platform = None
 
         self.running = True
         self.delayed = False
+        self.minutes_late = None
 
         self.__parse_row(row)
 
     @property
-    def departs(self):
-        return self._departs
+    def timetabled_departure(self):
+        return self._timetabled_departure
 
-    @departs.setter
-    def departs(self, value):
-        self._departs = self.__parse_time(value)
+    @timetabled_departure.setter
+    def timetabled_departure(self, value):
+        self._timetabled_departure = self.__parse_time(value)
+
+    @property
+    def actual_departure(self):
+        return self._actual_departure
+
+    @actual_departure.setter
+    def actual_departure(self, value):
+        self._actual_departure = self.__parse_time(value)
 
     def will_depart(self):
-        return self.running and self.departs > datetime.now()
+        return self.running and (
+            self.actual_departure is None or self.actual_departure > datetime.now())
 
     def __parse_time(self, hhmm):
         time = datetime.strptime(hhmm.strip().strip("ad"), "%H:%M").time()
@@ -48,19 +59,26 @@ class Train(object):
         due, destination, status, platform, _ = row
 
         self.destination = destination[0].strip()
-        self.departs = due[0]
+        self.timetabled_departure = due[0]
         self.platform = platform[0] if platform else ''
-        status = status[0]
+        status = [s.strip() for s in status]
 
-        if status == 'Cancelled':
+        if 'Cancelled' in status:
             self.running = False
 
-        elif status == 'Delayed':
+        elif 'late' in status or 'Delayed' in status:
             self.delayed = True
 
-        elif status != 'On time':
-            self.delayed = True
-            # TODO: read in expected time
+            # Read in expected time
+            try:
+                self.actual_departure = status[0]
+            except ValueError:
+                pass
+
+        else:
+            # On time
+            self._actual_departure = self._timetabled_departure
+
 
 
 class NRETimes(object):
@@ -78,12 +96,12 @@ class NRETimes(object):
         #open("nre_hsl.html", "w").write(html.decode('utf8'))
 
     def doc(self):
-        cache = "nre_%s.html" % self.station_code
+        cache = "nre_%s_delayed.html" % self.station_code
         html = open(cache).read()
         return BeautifulSoup(html)
 
     def trains(self):
-        for row in self.live_doc().find('table').tbody.find_all('tr'):
+        for row in self.doc().find('table').tbody.find_all('tr'):
             cells = row.find_all("td")
             yield Train([list(td.strings) for td in cells])
 
