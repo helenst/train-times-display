@@ -27,10 +27,21 @@ void setup()
 {
     // Set up the serial port connection
     Serial.begin(9600);
+
+    // Wait for serial to be ready
+    while (!Serial) {
+        ;
+    }
+
     Serial.flush();
 
     // set up the LCD's number of columns and rows:
     lcd.begin(16, 2);
+
+    // Write 0 back to the port to indicate that we are ready for input
+    // (Arduino resets itself on serial connection - we don't want input scripts
+    // to be throwing data at us while this is going on)
+    Serial.write(0);
 }
 
 
