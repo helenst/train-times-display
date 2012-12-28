@@ -26,3 +26,9 @@ STATION_CODES = {
 }
 
 SERIAL_PORT = '/dev/ttyACM0'
+
+import display
+DISPLAY = display.SerialDisplay
+
+import formats
+FORMATTER = formats.SixteenByTwo

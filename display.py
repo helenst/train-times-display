@@ -1,14 +1,29 @@
+import config
 import serial
-
 
 class DeviceTimeoutError(Exception):
     pass
 
 
-class Display(object):
+class DummyDisplay:
 
-    def __init__(self, device, rate=9600, cols=16, rows=2):
-        self.port = serial.Serial(device, rate, timeout=10)
+    def __init__(self, *args):
+        pass
+
+    def write(self, string):
+        print(string)
+
+    def move_to(self, row, col):
+        print("move to {}, {}".format(row, col))
+
+    def clear(self):
+        print("clear")
+
+
+class SerialDisplay:
+
+    def __init__(self, rate=9600, cols=16, rows=2):
+        self.port = serial.Serial(config.SERIAL_PORT, rate, timeout=10)
         self.wait_for_ready()
         self.cols = cols
         self.rows = rows
@@ -17,7 +32,7 @@ class Display(object):
     # Wait for this to complete (send a zero) before pushing any data
     def wait_for_ready(self):
         data = self.port.read()
-        if data[0] == 0:
+        if data and data[0] == 0:
             # Got the expected ready signal
             return
         else:
@@ -31,6 +46,4 @@ class Display(object):
 
     def write(self, string):
         self.port.write('w{0}\0'.format(string).encode())
-
-    def flush(self):
         self.port.flush()

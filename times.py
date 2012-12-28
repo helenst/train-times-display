@@ -107,12 +107,12 @@ class NRETimes(object):
         #open("nre_hsl.html", "w").write(html.decode('utf8'))
 
     def doc(self):
-        cache = "data/nre_%s_delayed.html" % self.station_code
+        cache = "data/nre_%s.html" % self.station_code
         html = open(cache).read()
         return BeautifulSoup(html)
 
     def trains(self):
-        for row in self.live_doc().find('table').tbody.find_all('tr'):
+        for row in self.doc().find('table').tbody.find_all('tr'):
             cells = row.find_all("td")
             yield Train([list(td.strings) for td in cells])
 
