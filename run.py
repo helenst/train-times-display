@@ -8,11 +8,11 @@ import config
 from board import DepartureBoard
 departures = DepartureBoard()
 
-trains = times.NRETimes(config.STATION, config.DIRECTIONS)
 
-# may need running if the arduino is manually reset
-# import time
-# time.sleep(3)
+def fetch_data():
+    return times.NRETimes(config.STATION, config.DIRECTIONS)
+
+trains = fetch_data()
 
 
 def next_two_to_waterloo():
@@ -37,4 +37,23 @@ def all_trains():
         for train in trains.going_to(direction):
             departures.display_train(train, i)
 
-next_two_to_waterloo()
+from datetime import datetime
+import time
+
+# wait two seconds for arduino to reset
+print("starting up...", end=" ")
+time.sleep(2)
+print("OK")
+
+while True:
+
+    # update data every 5 minutes
+    minute = datetime.now().minute
+    if minute % 5 == 0:
+        trains = fetch_data()
+
+    next_two_to_waterloo()
+
+    # Sleep until the next minute boundary
+    s = datetime.now().second
+    time.sleep(60 - s)
