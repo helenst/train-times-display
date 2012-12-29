@@ -52,7 +52,7 @@ class SixteenByTwo:
         """
 
         time = train.timetabled_departure.strftime("%H:%M")
-        return "{time} {countdown:2} {delay:>3} {station}".format(
+        return "{time} {countdown:>2} {delay:>3} {station}".format(
             time=time,
             countdown=self.countdown(train),
             delay=self.delay(train),
