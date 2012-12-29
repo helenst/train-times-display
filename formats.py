@@ -1,7 +1,11 @@
 import config
 
+
 class Full:
+
     def output(self, train):
+        """Format train information for a terminal display"""
+
         return ("{time}\t{delayed}{actual} {destination}".format(
             time=train.timetabled_departure.strftime("%H:%M"),
             delayed='!' if train.delayed else ' ',
@@ -11,8 +15,12 @@ class Full:
 
 class SixteenByTwo:
 
-    @classmethod
-    def countdown(cls, train):
+    def countdown(self, train):
+        """Indicate number of minutes until train departs
+           Unknown departure time:     '??'
+           More than 99 minutes away:  '99'
+           Fewer than 99 minutes away: '37'
+        """
 
         minutes = train.minutes_until
         if minutes is None:
@@ -21,8 +29,13 @@ class SixteenByTwo:
             minutes = '99'  # A long time until this train leaves
         return str(minutes)
 
-    @classmethod
-    def delay(cls, train):
+    def delay(self, train):
+        """Indicate number of minutes the train is delayed
+            Known delay:   '+37'
+            Unknown delay: '!'
+            No delay:      ''
+        """
+
         if train.delayed:
             if train.minutes_late:
                 return '+{}'.format(train.minutes_late)  # Known delay
@@ -32,10 +45,15 @@ class SixteenByTwo:
             return ''
 
     def output(self, train):
+        """Format train information for a 16x2 character display
+            Normal (no delay):  10:32 10     WAT
+            Known delay:        10:47  8 +35 PMH
+            Unknown delay:      11:01 ??   ! RDG
+        """
 
         time = train.timetabled_departure.strftime("%H:%M")
         return "{time} {countdown:2} {delay:>3} {station}".format(
             time=time,
-            countdown=self.__class__.countdown(train),
-            delay=self.__class__.delay(train),
+            countdown=self.countdown(train),
+            delay=self.delay(train),
             station=config.STATION_CODES[train.destination])
