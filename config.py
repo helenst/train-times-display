@@ -12,5 +12,9 @@ SERIAL_PORT = '/dev/ttyACM0'
 import display
 DISPLAY = display.SerialDisplay
 
+# Enable this if testing without external device -
+# output to console
+#DISPLAY = display.DummyDisplay
+
 import formats
 FORMATTER = formats.SixteenByTwo
