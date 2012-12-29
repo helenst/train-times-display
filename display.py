@@ -1,11 +1,13 @@
 import config
 import serial
 
+
 class DeviceTimeoutError(Exception):
     pass
 
 
-class DummyDisplay:
+class DebugDisplay:
+    """Terminal display of train data and commands"""
 
     def __init__(self, *args):
         pass

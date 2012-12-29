@@ -14,7 +14,7 @@ DISPLAY = display.SerialDisplay
 
 # Enable this if testing without external device -
 # output to console
-#DISPLAY = display.DummyDisplay
+#DISPLAY = display.DebugDisplay
 
 import formats
 FORMATTER = formats.SixteenByTwo
