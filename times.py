@@ -112,7 +112,7 @@ class NRETimes(object):
         return BeautifulSoup(html)
 
     def trains(self):
-        for row in self.doc().find('table').tbody.find_all('tr'):
+        for row in self.live_doc().find('table').tbody.find_all('tr'):
             cells = row.find_all("td")
             yield Train([list(td.strings) for td in cells])
 
