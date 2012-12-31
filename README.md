@@ -3,25 +3,29 @@ Train Times Display
 
 ![Arduino showing next train times](http://farm9.staticflickr.com/8488/8279350628_0b14fb578c.jpg)
 
-This is a little arduino project which aims to display the next train times on a 16x2 LCD display,
-because I live near the station and always like to know how long I've got / how much I need to panic
-when getting ready to go out. Hopefully one day it will sit in the hallway and be extremely useful.
+This is a little arduino project which reads in UK train information and displays the next trains 
+on an LCD character display. I made it because I live near the station and am always rushing out to
+catch some train or other. The idea is that I will be able to glance at the display while I'm trying
+to find my keys / tie my shoes and know whether it's worth hurrying.
 
 
 Arduino
 -------
 
 Acts as a dumb display, interpreting commands from the USB input to perform actions
-on the 16x2 LCD display using the LiquidCrystal library.
+on the character display using the LiquidCrystal library.
 
-Uses the built in Serial library to read a simple display protocol from the USB port
+It uses the built in Serial library to read a simple display protocol from the USB port
 
 
 Python Script
 -------------
 
-The brains of the operation - scrapes live departure boards for the station in question,
-decides what to display and sends commands over the serial port
+The brains of the operation.
+
+A long running process which scrapes live departure boards on a regular basis, decides what to display 
+and updates the display every minute.
+
 
 Requirements
 ------------
@@ -33,13 +37,17 @@ Requirements
 
 ### Hardware ###
 
-* Arduino
-* LCD 16x display + header so it sticks into the breadboard
-* Breadboard, jumper wires, potentiometer
+* Arduino (I used Uno)
+* LCD 16x2 display
+* 0.1" header, 16 pins long
+* Soldering equipment
+* Breadboard
+* Jumper wires
+* Potentiometer
 
 
-Protocol
---------
+Display Protocol
+----------------
 
 Arduino sends a single zero when it's ready for action. (This is because it resets
 itself on new serial connection - we don't want to throw commands at it until it's ready)
@@ -92,6 +100,7 @@ Future work
 
 * Use RGB backlit display and light up red when there are problems
 * Quite possibly make a Raspberry Pi version
+* Try the capacitor solution for reset-on-serial
 
 
 Thanks
