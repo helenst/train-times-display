@@ -90,8 +90,8 @@ Commands can be concatenated. e.g.
 Future work
 -----------
 
-* Long-running process with scheduling
 * Use RGB backlit display and light up red when there are problems
+* Quite possibly make a Raspberry Pi version
 
 
 Thanks
