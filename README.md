@@ -9,29 +9,25 @@ catch some train or other. The idea is that I will be able to glance at the disp
 to find my keys / tie my shoes and know whether it's worth hurrying.
 
 
-Arduino
--------
+Architecture
+------------
 
-Acts as a dumb display, interpreting commands from the USB input to perform actions
-on the character display using the LiquidCrystal library.
+Consists of a dumb display Arduino on the end of a USB cable, driven by a Python script which contains most of the logic.
 
-It uses the built in Serial library to read a simple display protocol from the USB port
+The Arduino knows nothing about train times - it interprets commands from the USB input to perform actions
+on the character display using the LiquidCrystal library. It knows nothing about train times and is completely generic - 
+you could program the chip once and repurpose it later when you're bored with trains.
 
-
-Python Script
--------------
-
-The brains of the operation.
-
-A long running process which scrapes live departure boards on a regular basis, decides what to display 
+The Python script is a long running process which scrapes live departure boards on a regular basis, decides what to display 
 and updates the display every minute.
 
 
 Requirements
 ------------
+
 ### Software ###
 
-* python 3
+* python 3 (I'm using 3.2.3, untested on anything else)
 * pyserial
 * beautifulsoup v4
 
@@ -43,7 +39,23 @@ Requirements
 * Soldering equipment
 * Breadboard
 * Jumper wires
-* Potentiometer
+* 10K potentiometer
+
+
+Instructions
+------------
+
+[This is how you wire it up](http://learn.adafruit.com/character-lcds/wiring-a-character-lcd).
+
+Once all the software requirements are installed, try running it.
+
+    python3 run.py
+
+You may need to edit config.py to get the right serial device, depending on your system. You might also need to 
+play around with device file permissions.
+
+When it's working, the LCD should start to update with train times every minute. By default it's set up for Haslemere,
+my home town. You can set up your own local station in the stations directory and tell config.py to use that instead.
 
 
 Display Protocol
@@ -93,6 +105,8 @@ e.g. 'r\x05' scrolls right by 5
 Commands can be concatenated. e.g.
 
     'cm\x00\x01wHello\0'
+    
+means clear the screen, move to the start of the second row and print Hello
 
 
 Future work
