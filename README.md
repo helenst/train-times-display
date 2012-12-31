@@ -1,7 +1,8 @@
 Train Times Display
 ===================
 
-![Arduino showing next train times](http://farm9.staticflickr.com/8488/8279350628_0b14fb578c.jpg)
+[![Arduino showing next train times](http://farm9.staticflickr.com/8351/8328703591_25a9e6a11c.jpg)](http://www.flickr.com/photos/orangebrompton/8328703591/)
+
 
 This is a little arduino project which reads in UK train information and displays the next trains 
 on an LCD character display. I made it because I live near the station and am always rushing out to
