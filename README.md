@@ -41,7 +41,7 @@ Requirements
 Protocol
 --------
 
-Arduino sends a single zero when it's ready for action. (This is because the it resets
+Arduino sends a single zero when it's ready for action. (This is because it resets
 itself on new serial connection - we don't want to throw commands at it until it's ready)
 
 Commands consist of a single letter followed by the arguments for that command
