@@ -31,6 +31,7 @@ Requirements
 * python 3 (I'm using 3.2.3, untested on anything else)
 * pyserial
 * beautifulsoup v4
+* Arduino >= 1.0.1
 
 ### Hardware ###
 
@@ -47,6 +48,8 @@ Instructions
 ------------
 
 [This is how you wire it up](http://learn.adafruit.com/character-lcds/wiring-a-character-lcd).
+
+The Arduino code is in LcdSerial/LcdSerial.ino.
 
 Once all the software requirements are installed, try running it.
 
