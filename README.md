@@ -14,18 +14,19 @@ It works with either Arduino or Raspberry Pi, depending on which display mode is
 Architecture
 ------------
 
+The Python script is a long running process which scrapes live departure boards every five minutes and 
+updates the display every minute.
+
+
 ### Arduino ###
 
-The Python script runs on a PC, which drives the Arduino over a USB cable. The Arduino acts as a dumb display, receiving 
-and interpreting display commands from the driver script. It knows nothing about trains and could easily be repurposed.
+The driver script runs on a PC, which drives the Arduino over a USB cable. The Arduino acts as a dumb display, receiving 
+and interpreting display commands. The Arduino side knows nothing about trains and could easily be repurposed.
 
 
 ### Raspberry Pi ###
 
-The Python script runs on the Pi, driving the display over the GPIO interface using [Adafruit's char LCD code](https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code)
-
-
-The script is a long running process which scrapes live departure boards every five minutes and updates the display every minute.
+The driver script runs on the Pi, driving the display over the GPIO interface using [Adafruit's char LCD code](https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code)
 
 
 Requirements
@@ -36,8 +37,8 @@ Requirements
 * python 3 (I'm using 3.2.3, untested on anything else)
 * pyserial
 * beautifulsoup v4
-* If you are using Arduino, Arduino software >= 1.0.1 
-* If you are using Raspberry pi, extra requirements detailed in the [Adafruit instructions](http://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/necessary-packages).
+* For Arduino, Arduino software >= 1.0.1 
+* For Raspberry Pi, extra requirements detailed in the [Adafruit instructions](http://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/necessary-packages).
 
 ### Hardware ###
 
@@ -54,7 +55,9 @@ Requirements
 Instructions
 ------------
 
-[This is how you wire it up](http://learn.adafruit.com/character-lcds/wiring-a-character-lcd).
+This is how you wire it up:
+[Arduino](http://learn.adafruit.com/character-lcds/wiring-a-character-lcd) / 
+[Raspberry Pi](http://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/wiring)
 
 The Arduino code is in LcdSerial/LcdSerial.ino.
 
