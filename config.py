@@ -10,7 +10,11 @@ STATION_CODES = station.STATION_CODES
 SERIAL_PORT = '/dev/ttyACM0'
 
 import display
-DISPLAY = display.SerialDisplay
+# Arduino
+# DISPLAY = display.SerialDisplay
+
+# Raspberry pi, using Adafruit char LCD lib
+DISPLAY = display.GpioDisplay
 
 # Enable this if testing without external device -
 # output to console

@@ -1,6 +1,7 @@
 import config
 import serial
 
+from Adafruit_CharLCD import Adafruit_CharLCD
 
 class DeviceTimeoutError(Exception):
     pass
@@ -49,3 +50,19 @@ class SerialDisplay:
     def write(self, string):
         self.port.write('w{0}\0'.format(string).encode())
         self.port.flush()
+
+
+class GpioDisplay:
+
+    def __init__(self, *_args):
+        self.lcd = Adafruit_CharLCD()
+        self.lcd.begin(16,2)
+
+    def clear(self):
+        self.lcd.clear()
+
+    def move_to(self, row, col):
+        self.lcd.setCursor(row, col)
+
+    def write(self, string):
+        self.lcd.message(string)
