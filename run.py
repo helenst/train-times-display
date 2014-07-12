@@ -18,24 +18,27 @@ trains = fetch_data()
 def next_two_to_waterloo():
 
     next_two = itertools.islice(trains.going_to("London"), 0, 2, 1)
-    for i, train in enumerate(next_two):
-        departures.display_train(train, i)
+    departures.set_trains(next_two)
+#    for i, train in enumerate(next_two):
+#        departures.display_train(train, i)
 
 
 def next_train_in_each_direction():
-    for i, direction in enumerate(config.DIRECTIONS):
-        # LCD gets next train in each direction
-        next_train = next(trains.going_to(direction))
-        departures.display_train(next_train, i)
+    next_each = [
+        next(trains.going_to(direction))
+        for i, direction in enumerate(config.DIRECTIONS)]
+    departures.set_trains(next_each)
 
 
 def all_trains():
+    full_list = []
     for i, direction in enumerate(config.DIRECTIONS):
         # Print out all trains in each direction
         #print(direction.upper())
         #print('-' * len(direction))
         for train in trains.going_to(direction):
-            departures.display_train(train, i)
+            full_list.append(train)
+    departures.set_trains(full_list)
 
 from datetime import datetime
 import time
@@ -53,6 +56,7 @@ while True:
         trains = fetch_data()
 
     next_two_to_waterloo()
+    #next_train_in_each_direction()
 
     # Sleep until the next minute boundary
     s = datetime.now().second

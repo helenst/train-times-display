@@ -2,6 +2,7 @@ import config
 import serial
 
 from Adafruit_CharLCD import Adafruit_CharLCD
+from RPi import GPIO
 
 class DeviceTimeoutError(Exception):
     pass
@@ -21,6 +22,9 @@ class DebugDisplay:
 
     def clear(self):
         print("clear")
+
+    def backlight(self, r, g, b):
+        print("set backlight ({}, {}, {})".format(r,g,b))
 
 
 class SerialDisplay:
@@ -51,6 +55,10 @@ class SerialDisplay:
         self.port.write('w{0}\0'.format(string).encode())
         self.port.flush()
 
+    def backlight(self, r, g, b):
+        # not implemented
+        pass
+
 
 class GpioDisplay:
 
@@ -66,3 +74,20 @@ class GpioDisplay:
 
     def write(self, string):
         self.lcd.message(string)
+
+    def backlight(self, r, g, b):
+        # not implemented
+        pass
+
+
+class RgbGpioDisplay(GpioDisplay):
+
+    def __init__(self, *_args):
+        super().__init__(self, *_args)
+
+        GPIO.setup(config.BACKLIGHT_GREEN, GPIO.OUT)
+        GPIO.setup(config.BACKLIGHT_BLUE, GPIO.OUT)
+
+    def backlight(self, r, g, b):
+        GPIO.output(config.BACKLIGHT_GREEN, g > 0)
+        GPIO.output(config.BACKLIGHT_BLUE, b > 0)

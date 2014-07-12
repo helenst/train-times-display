@@ -112,9 +112,15 @@ class NRETimes(object):
         return BeautifulSoup(html)
 
     def trains(self):
-        for row in self.live_doc().find('table').tbody.find_all('tr'):
-            cells = row.find_all("td")
-            yield Train([list(td.strings) for td in cells])
+        try:
+            table = self.live_doc().find('table')
+            if table:
+                for row in table.tbody.find_all('tr'):
+                    cells = row.find_all("td")
+                    yield Train([list(td.strings) for td in cells])
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
 
     def departing(self):
         return (t for t in self.trains() if t.will_depart())
