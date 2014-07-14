@@ -11,24 +11,26 @@ class DepartureBoard:
         self.display = config.DISPLAY()
         self.display.backlight(0, 1, 0)
         self.formatter = config.FORMATTER()
-        self.delayed = {}
         self.display.clear()
+        self.current_trains = []
 
     def set_trains(self, trains):
-        self.display.clear()
+        trains = list(trains)
+
         for i, train in enumerate(trains):
             self.display_train(train, i)
 
+        for i in range(len(trains),len(self.current_trains)):
+            self.display_row(' '*16, i)
+
+        self.current_trains = trains
+
         if trains:
             if any([t.delayed for t in trains]):
-                self.set_state(self.STATE_ERROR)
+                self.set_state(self.STATE_DELAY)
             else:
                 self.set_state(self.STATE_OK)
         else:
-            self.display.move_to(0, 0)
-            self.display.write('***   GOOD   ***')
-            self.display.move_to(0, 1)
-            self.display.write('***   NIGHT  ***')
             self.set_state(self.STATE_INACTIVE)
 
     def set_state(self, state):
@@ -38,14 +40,23 @@ class DepartureBoard:
         INACTIVE means no trains in the system (probably night time)
         """
         if state == self.STATE_DELAY:
-             # TODO: redness
-            self.display.backlight(0, 0, 1)
+            # Red
+            self.display.backlight(1, 0, 0)
         elif state == self.STATE_OK:
+            # Green
             self.display.backlight(0, 1, 0)
         elif state == self.STATE_INACTIVE:
+            # Lights out
+            self.display_row('***   GOOD   ***', 0)
+            self.display_row('***   NIGHT  ***', 1)
             self.display.backlight(0, 0, 0)
+
+    def display_row(self, text, row):
+        """Write a single line of text to the board"""
+        print(text, row)
+        self.display.move_to(0, row)
+        self.display.write(text)
 
     def display_train(self, train, row):
         """Write a single train to the board"""
-        self.display.move_to(0, row)
-        self.display.write(self.formatter.output(train))
+        self.display_row(self.formatter.output(train), row)

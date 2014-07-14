@@ -63,7 +63,10 @@ class SerialDisplay:
 class GpioDisplay:
 
     def __init__(self, *_args):
-        self.lcd = Adafruit_CharLCD()
+        if config.PI_REVISION == 2:
+            self.lcd = Adafruit_CharLCD(pins_db=[23, 17, 27, 22])
+        else:
+            self.lcd = Adafruit_CharLCD()
         self.lcd.begin(16,2)
 
     def clear(self):
@@ -84,10 +87,11 @@ class RgbGpioDisplay(GpioDisplay):
 
     def __init__(self, *_args):
         super().__init__(self, *_args)
-
         GPIO.setup(config.BACKLIGHT_GREEN, GPIO.OUT)
         GPIO.setup(config.BACKLIGHT_BLUE, GPIO.OUT)
+        GPIO.setup(config.BACKLIGHT_RED, GPIO.OUT)
 
     def backlight(self, r, g, b):
-        GPIO.output(config.BACKLIGHT_GREEN, g > 0)
-        GPIO.output(config.BACKLIGHT_BLUE, b > 0)
+        GPIO.output(config.BACKLIGHT_RED,   config.BACKLIGHT_ON if r > 0 else config.BACKLIGHT_OFF)
+        GPIO.output(config.BACKLIGHT_GREEN, config.BACKLIGHT_ON if g > 0 else config.BACKLIGHT_OFF)
+        GPIO.output(config.BACKLIGHT_BLUE,  config.BACKLIGHT_ON if b > 0 else config.BACKLIGHT_OFF)
