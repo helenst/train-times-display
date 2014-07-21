@@ -41,7 +41,7 @@ Requirements
 ### Software ###
 
 * python 3 (I'm using 3.2.3, untested on anything else)
-* pyserial
+* pyserial (arduino only)
 * beautifulsoup v4
 * For Arduino, Arduino software >= 1.0.1 
 * For Raspberry Pi, extra requirements detailed in the [Adafruit instructions](http://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/necessary-packages).
