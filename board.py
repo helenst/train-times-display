@@ -5,7 +5,7 @@ import formats
 
 class DepartureBoard:
 
-    STATE_DELAY, STATE_OK, STATE_INACTIVE = range(0,3)
+    STATE_DELAY, STATE_MINOR_DELAY, STATE_OK, STATE_INACTIVE = range(0,4)
 
     def __init__(self):
         self.display = config.DISPLAY()
@@ -27,7 +27,11 @@ class DepartureBoard:
 
         if trains:
             if any([t.delayed for t in trains]):
-                self.set_state(self.STATE_DELAY)
+                delays = [t.minutes_late for t in trains]
+                if any([t.severely_delayed for t in trains]):
+                    self.set_state(self.STATE_DELAY)
+                else:
+                    self.set_state(self.STATE_MINOR_DELAY)
             else:
                 self.set_state(self.STATE_OK)
         else:
@@ -42,6 +46,9 @@ class DepartureBoard:
         if state == self.STATE_DELAY:
             # Red
             self.display.backlight(1, 0, 0)
+        elif state == self.STATE_MINOR_DELAY:
+            # Yellow
+            self.display.backlight(1, 1, 0)
         elif state == self.STATE_OK:
             # Green
             self.display.backlight(0, 1, 0)

@@ -2,6 +2,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
+import config
+
 # Detect past-midnight trains that will be given tomorrow's date
 DAY_CUTOFF = 4
 
@@ -38,6 +40,16 @@ class Train(object):
     @actual_departure.setter
     def actual_departure(self, value):
         self._actual_departure = self.__parse_time(value)
+
+    @property
+    def unknown_delay(self):
+        return self.delayed and self.minutes_late is None
+
+    @property
+    def severely_delayed(self):
+        return self.delayed and (
+                self.unknown_delay or
+                self.minutes_late >= config.SEVERE_DELAY_THRESHOLD)
 
     @property
     def minutes_until(self):

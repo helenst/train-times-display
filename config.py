@@ -6,6 +6,8 @@ DIRECTIONS = station.DIRECTIONS
 
 STATION_CODES = station.STATION_CODES
 
+# This many minutes or longer counts as a severe delay
+SEVERE_DELAY_THRESHOLD = 5
 
 SERIAL_PORT = '/dev/ttyACM0'
 
