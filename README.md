@@ -3,12 +3,19 @@ Train Times Display
 
 [![Arduino showing next train times](http://farm9.staticflickr.com/8351/8328703591_f028941a37.jpg)](http://www.flickr.com/photos/orangebrompton/8328703591/)
 
-This is a little project which reads in UK train information and displays the next trains 
-on an LCD character display. I made it because I live near the station and am always rushing out to
-catch some train or other. The idea is that I will be able to glance at the display while I'm trying
-to find my keys / tie my shoes and know whether it's worth hurrying.
+Set of scripts to read in UK train information and displays the next two trains on an LCD character display. It can be run on a Raspberry pi, or on a PC controlling Arduino over serial.
 
-It works with either Arduino or Raspberry Pi, depending on which display mode is chosen.
+Uses RGB backlight for quick status indication - green for all OK, yellow for minor delays, red for severe delays.
+
+
+History
+-------
+
+I made this because I live near the station and am always rushing out to catch some train or other. The idea is that I will be able to glance at the display while I'm trying to find my keys / tie my shoes and know whether it's worth hurrying.
+
+It started out as an arduino project, with a master python script running on a server and pushing display commands to the Arduino - because (a) I didn't have any arduino networking and (b) I'd rather do parsing / logic stuff in Python than C. It became clear that this would make more sense as a Raspberry Pi script so I bought the right GPIO bits and moved it across.
+
+The Arduino code is still there and can be enabled in the config by changing display mode.
 
 
 Architecture
@@ -20,8 +27,7 @@ updates the display every minute.
 
 ### Arduino ###
 
-The driver script runs on a PC, which drives the Arduino over a USB cable. The Arduino acts as a dumb display, receiving 
-and interpreting display commands. The Arduino side knows nothing about trains and could easily be repurposed.
+The driver script runs on a PC, which drives the Arduino over a USB cable. The Arduino acts as a dumb display, receiving and interpreting display commands. The Arduino side knows nothing about trains and could easily be repurposed.
 
 
 ### Raspberry Pi ###
@@ -44,7 +50,7 @@ Requirements
 
 * Arduino (I used Uno) with USB cable. OR:
 * Raspberry pi + GPIO breakout kit + network connection
-* LCD 16x2 display
+* LCD 16x2 display (possibly RGB)
 * 0.1" header, 16 pins long
 * Soldering equipment
 * Breadboard
@@ -59,6 +65,8 @@ This is how you wire it up:
 [Arduino](http://learn.adafruit.com/character-lcds/wiring-a-character-lcd) / 
 [Raspberry Pi](http://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi/wiring)
 
+If you are using an RGB LCD, as I am, extra wiring will be needed for the backlights (I only wire in the red and green as this is all I use - happily, this nicely matches the Pi's original 8 GPIO pins). Make sure you are either using an LCD with built in backlight resistors (e.g. the Adafruit boards), or add your own into the circuit
+
 The Arduino code is in LcdSerial/LcdSerial.ino.
 
 You should edit config.py and comment out the relevant DISPLAY line depending on which hardware you are using.
@@ -67,11 +75,9 @@ Once all the software requirements are installed, try running it.
 
     python3 run.py
     
-You may need to further edit config.py to get the correct serial device, depending on your system. You might also need to 
-play around with device file permissions.
+You may need to further edit config.py to get the correct serial device, depending on your system. You might also need to play around with device file permissions.
 
-When it's working, the LCD should start to update with train times every minute. By default it's set up for Haslemere,
-my home town. You can set up your own local station in the stations directory and tell config.py to use that instead.
+When it's working, the LCD should start to update with train times every minute. By default it's set up for Haslemere, my home town. You can set up your own local station in the stations directory and tell config.py to use that instead.
 
 
 Serial Display Protocol (Arduino only)
@@ -124,12 +130,6 @@ Commands can be concatenated. e.g.
     
 means clear the screen, move to the start of the second row and print Hello
 
-
-Future work
------------
-
-* Use RGB backlit display and light up red when there are problems
-* Try the capacitor solution for reset-on-serial
 
 
 Thanks
