@@ -16,11 +16,11 @@ trains = fetch_data()
 
 
 def next_two_to_waterloo():
-
     next_two = itertools.islice(trains.going_to("London"), 0, 2, 1)
-    departures.set_trains(next_two)
-#    for i, train in enumerate(next_two):
-#        departures.display_train(train, i)
+    if trains.error:
+        departures.set_error()
+    else:
+        departures.set_trains(next_two)
 
 
 def next_train_in_each_direction():

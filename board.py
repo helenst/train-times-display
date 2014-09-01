@@ -5,7 +5,7 @@ import formats
 
 class DepartureBoard:
 
-    STATE_DELAY, STATE_MINOR_DELAY, STATE_OK, STATE_INACTIVE = range(0,4)
+    STATE_DELAY, STATE_MINOR_DELAY, STATE_OK, STATE_INACTIVE, STATE_ERROR = range(0,5)
 
     def __init__(self):
         self.display = config.DISPLAY()
@@ -37,6 +37,9 @@ class DepartureBoard:
         else:
             self.set_state(self.STATE_INACTIVE)
 
+    def set_error(self):
+        self.set_state(self.STATE_ERROR)
+
     def set_state(self, state):
         """Set the state of the board
         OK means everything is running as usual
@@ -56,6 +59,11 @@ class DepartureBoard:
             # Lights out
             self.display_row('***   GOOD   ***', 0)
             self.display_row('***   NIGHT  ***', 1)
+            self.display.backlight(0, 0, 0)
+        else:
+            # Something bad happened... check logs
+            self.display_row('!!!   ERROR  !!!', 0)
+            self.display_row('****************', 1)
             self.display.backlight(0, 0, 0)
 
     def display_row(self, text, row):

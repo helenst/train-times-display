@@ -109,6 +109,7 @@ class NRETimes(object):
     def __init__(self, station_code, directions):
         self.station_code = station_code
         self.directions = directions
+        self.error = False
 
     def live_doc(self):
         # Yeah, scraping is naughty. Open up your data, NRE!
@@ -124,6 +125,7 @@ class NRETimes(object):
         return BeautifulSoup(html)
 
     def trains(self):
+        self.error = False
         try:
             table = self.live_doc().find('table')
             if table:
@@ -133,6 +135,7 @@ class NRETimes(object):
         except Exception as e:
             import traceback
             traceback.print_exc()
+            self.error = True
 
     def departing(self):
         return (t for t in self.trains() if t.will_depart())
