@@ -58,6 +58,16 @@ while True:
     next_two_to_waterloo()
     #next_train_in_each_direction()
 
-    # Sleep until the next minute boundary
-    s = datetime.now().second
-    time.sleep(60 - s)
+    # Don't bother fetching trains between 1am and 5am
+    dt = datetime.now()
+    if dt.hour in config.QUIET_HOURS:
+        hour = config.QUIET_HOURS[-1] + 1
+        switch_on = dt.replace(hour=hour, minute=0, second=0)
+        sleepytimes = (switch_on - dt).seconds
+        print('sleeping until {} ({} seconds)'.format(switch_on, sleepytimes))
+
+    else:
+        # Sleep until the next minute boundary
+        sleepytimes = (60 - dt.second)
+
+    time.sleep(sleepytimes)

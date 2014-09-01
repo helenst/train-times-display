@@ -39,3 +39,9 @@ PI_REVISION = 2
 
 import formats
 FORMATTER = formats.SixteenByTwo
+
+# Range of hours in which we should not bother fetching times
+# it saves on pointless requests and also prevents this thing
+# lighting up at 4am when the first trains go onto the board!.
+# e.g. range(1,5) means between 1am and 4:49am
+QUIET_HOURS = range(1,6)
