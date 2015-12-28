@@ -29,10 +29,6 @@ BACKLIGHT_RED = 18
 # common cathode LEDs (many others) - set high to switch on (1, 0)
 BACKLIGHT_ON, BACKLIGHT_OFF = (0, 1)
 
-# Pi revision (quick check: does it have two mounting holes? If so, it's revision 2)
-# Affects pin mappings in char lcd code
-PI_REVISION = 2
-
 # Enable this if testing without external device -
 # output to console
 #DISPLAY = display.DebugDisplay

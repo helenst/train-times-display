@@ -63,7 +63,7 @@ class SerialDisplay:
 class GpioDisplay:
 
     def __init__(self, *_args):
-        if config.PI_REVISION == 2:
+        if GPIO.RPI_REVISION == 2:
             self.lcd = Adafruit_CharLCD(pins_db=[23, 17, 27, 22])
         else:
             self.lcd = Adafruit_CharLCD()
